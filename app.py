@@ -38,12 +38,24 @@ class BookRecommendationSystem:
         else:
             return "Category not found"
 
+    def view_average_ratings(self, category):
+        if category in self.ratings:
+            average_ratings = {
+                book: (sum(ratings) / len(ratings)) if ratings else "No ratings yet"
+                for book, ratings in self.ratings[category].items()
+            }
+            return average_ratings
+        else:
+            return "Category not found"
+
 
 if __name__ == "__main__":
     system = BookRecommendationSystem()
     while True:
         action = (
-            input("Choose an action (recommend, rate, personalized, exit): ")
+            input(
+                "Choose an action (recommend, rate, personalized, view ratings, exit): "
+            )
             .strip()
             .lower()
         )
@@ -72,6 +84,14 @@ if __name__ == "__main__":
             )
             recommendations = system.get_personalized_recommendations(category)
             print(f"Personalized recommendations: {recommendations}")
+        elif action == "view ratings":
+            category = (
+                input("Enter a book category (fiction, non-fiction, mystery): ")
+                .strip()
+                .lower()
+            )
+            average_ratings = system.view_average_ratings(category)
+            print(f"Average ratings: {average_ratings}")
         elif action == "exit":
             break
         else:
